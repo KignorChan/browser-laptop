@@ -46,7 +46,9 @@ class TabTitle extends React.Component {
     if (this.props.isPinned || !this.props.showTabTitle) {
       return null
     }
-    return <div data-test-id='tabTitle'
+    return <div
+      data-test-id='tabTitle'
+      data-text={this.props.displayTitle}
       className={css(
         styles.tab__title,
         this.props.addExtraGutter && styles.tab__title_extraGutter,
@@ -71,16 +73,45 @@ const styles = StyleSheet.create({
     fontSize: globalStyles.fontSize.tabTitle,
     lineHeight: '1',
     minWidth: 0, // see https://stackoverflow.com/a/36247448/4902448
+    width: '-webkit-fill-available',
     marginLeft: '6px',
     overflow: 'hidden',
     // relative position is required for background-clip
     position: 'relative',
-    transition: `background ${theme.tab.transitionDurationOut} ${theme.tab.transitionEasingOut}`,
-    // fade text color to transparent if it's too long,
-    // whilst preserving ability to animate the color with a second background layer
-    background: `linear-gradient(to left, var(--tab-background) 0, var(--tab-color) 9px) right top / 9px 100% no-repeat, var(--tab-color)`,
-    WebkitBackgroundClip: 'text !important', // !important is neccessary because aphrodite will put this at top of ruleset :-(
-    color: 'transparent'
+    zIndex: 300,
+    // fade the text out by creating a background which fades to tab bg from text color
+    // but clip it to the text so it doesn't interfere with any other tab background gradient.
+    // Also restrict to a tiny portion of the text as background-clip: text means
+    // no sub-pixel antializing (with color - zoom in 20x on mac and you'll see)
+    // for that portion of text.
+    color: 'transparent',
+    '::before': {
+      position: 'absolute',
+      display: 'block',
+      overflow: 'hidden',
+      top: 0,
+      left: 0,
+      right: '17.5%',
+      bottom: 0,
+      fontWeight: 'inherit',
+      content: 'attr(data-text)',
+      color: 'var(--tab-color)',
+      zIndex: 20
+    },
+    '::after': {
+      position: 'absolute',
+      display: 'block',
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      fontWeight: 'inherit',
+      content: 'attr(data-text)',
+      background: `linear-gradient(to left, var(--tab-background) 0, var(--tab-color) 18%) right top / 100% 100% no-repeat`,
+      WebkitBackgroundClip: 'text !important', // !important is neccessary because aphrodite will put this at top of ruleset :-(
+      color: 'transparent',
+      zIndex: 10
+    }
   },
 
   tab__title_isDarwin: {

@@ -167,9 +167,15 @@ class Tab extends React.Component {
     // In case there's a tab preview happening, cancel the preview
     // when mouse is over a tab
     windowActions.setTabPageHoverState(this.props.tabPageIndex, false)
+    // cache offset position for hover radial grandient
+    if (this.tabNode) {
+      const tabBounds = this.tabNode.getBoundingClientRect()
+      this.tabOffsetLeft = tabBounds.left
+      this.tabOffsetTop = tabBounds.top
+    }
   }
 
-  onMouseMove () {
+  onMouseMove (e) {
     // dispatch a message to the store so it can delay
     // and preview the tab based on mouse idle time
     clearTimeout(this.mouseTimeout)
@@ -178,6 +184,13 @@ class Tab extends React.Component {
         windowActions.setTabHoverState(this.props.frameKey, true, true)
       },
       getSetting(settings.TAB_PREVIEW_TIMING))
+    // fancy radial gradient mouse tracker
+    if (this.elementRef) {
+      var x = e.pageX - this.tabOffsetLeft
+      var y = e.pageY - this.tabOffsetTop
+      this.elementRef.style.setProperty('--tab-mouse-x', `${x}px`)
+      this.elementRef.style.setProperty('--tab-mouse-y', `${y}px`)
+    }
   }
 
   onAuxClick (e) {
@@ -455,7 +468,8 @@ const styles = StyleSheet.create({
       '--tab-color': `var(--tab-color-hover, ${theme.tab.color})`,
       '--tab-border-color': `var(--tab-border-color-hover, ${theme.tab.borderColor})`,
       '--tab-transit-duration': theme.tab.transitionDurationIn,
-      '--tab-transit-easing': theme.tab.transitionEasingIn
+      '--tab-transit-easing': theme.tab.transitionEasingIn,
+      '--tab-mouse-opacity': '1'
     }
   },
 
@@ -491,6 +505,7 @@ const styles = StyleSheet.create({
     '--tab-background': theme.tab.active.background,
     '--tab-background-hover': theme.tab.hover.active.background,
     '--tab-border-color-bottom': 'var(--tab-background)',
+    '--tab-mouse-opacity': '0 !important'
   },
 
   tabArea_isPreview: {
@@ -546,7 +561,32 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     position: 'relative',
     color: `var(--tab-color, ${theme.tab.color})`,
-    borderBottom: `solid var(--tab-border-width, ${theme.tab.borderWidth}px) var(--tab-border-color-bottom, var(--tab-border-color))`
+    borderBottom: `solid var(--tab-border-width, ${theme.tab.borderWidth}px) var(--tab-border-color-bottom, var(--tab-border-color))`,
+
+    // mouse-tracking radial gradient
+    '::after': {
+      '--tab-mouse-size': '150px',
+      opacity: 'var(--tab-mouse-opacity, 0)',
+      content: '""',
+      position: 'absolute',
+      left: 'var(--tab-mouse-x, -100%)',
+      top: 'var(--tab-mouse-y, -100%)',
+      width: 'var(--tab-mouse-size, 0)',
+      height: 'var(--tab-mouse-size, 0)',
+      background: 'radial-gradient(circle closest-side, var(--tab-background), transparent)',
+      transform: 'translate(-50%, -50%)',
+      transition: 'opacity 0s ease 0s',
+      // transition: `background var(--tab-transit-duration) var(--tab-transit-easing) var(--tab-transit-duration),
+      //            filter var(--tab-transit-duration) var(--tab-transit-easing) var(--tab-transit-duration)`,
+      filter: 'brightness(150%)',
+      // must be lower z-index than the tab title since it has a
+      // fade to the tab-bg-color and if this is in-between it
+      // and the tab-bg then that fade will look nasty.
+      zIndex: 200
+    },
+    ':hover:after': {
+      transitionDelay: 'var(--tab-transit-delay)'
+    }
   },
 
   tabArea__tab_audioTopBorder: {
