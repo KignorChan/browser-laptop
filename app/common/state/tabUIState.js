@@ -73,7 +73,7 @@ module.exports.showTabEndIcon = (state, frameKey) => {
   return (
     !closeState.hasFixedCloseIcon(state, frameKey) &&
     !closeState.hasRelativeCloseIcon(state, frameKey) &&
-    !isEntryIntersected(state, 'tabs', intersection.at40)
+    !isEntryIntersected(state, 'tabs', intersection.at46)
   )
 }
 
