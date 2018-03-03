@@ -307,6 +307,15 @@ class Tab extends React.Component {
         easing: 'ease-in-out'
       })
     }
+    // no transition between active <-> inactive
+    if (this.elementRef && prevProps && prevProps.isActive !== this.props.isActive) {
+      const className = css(styles.tabArea_instantTransition)
+      console.log(`adding class ${className} to`, this.elementRef)
+      this.elementRef.classList.add(className)
+      window.requestAnimationFrame(() => {
+        this.elementRef.classList.remove(className)
+      })
+    }
   }
 
   render () {
@@ -450,6 +459,10 @@ const styles = StyleSheet.create({
     }
   },
 
+  tabArea_instantTransition: {
+    '--tab-transit-duration': '0 !important'
+  },
+
   tabArea_dragging_left: {
     paddingLeft: globalStyles.spacing.dragSpacing
   },
@@ -478,8 +491,6 @@ const styles = StyleSheet.create({
     '--tab-background': theme.tab.active.background,
     '--tab-background-hover': theme.tab.hover.active.background,
     '--tab-border-color-bottom': 'var(--tab-background)',
-    '--tab-transit-duration': theme.tab.transitionDurationIn,
-    '--tab-transit-easing': theme.tab.transitionEasingIn
   },
 
   tabArea_isPreview: {
