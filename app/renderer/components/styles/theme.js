@@ -206,7 +206,7 @@
         },
 
         audio: {
-          color: '#69B9F9'
+          color: '#256ea9'
         },
 
         close: {

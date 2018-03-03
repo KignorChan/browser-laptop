@@ -549,7 +549,7 @@ const styles = StyleSheet.create({
       left: 0,
       right: 0,
       height: '2px',
-      background: 'lightskyblue'
+      background: theme.tab.icon.audio.color
     }
   },
 
