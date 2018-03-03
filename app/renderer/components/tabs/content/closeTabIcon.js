@@ -18,7 +18,6 @@ const frameStateUtil = require('../../../../../js/state/frameStateUtil')
 // Styles
 const globalStyles = require('../../styles/global')
 const {theme} = require('../../styles/theme')
-const {opacityIncreaseElementKeyframes} = require('../../styles/animations')
 
 class CloseTabIcon extends React.Component {
   constructor (props) {
@@ -44,37 +43,6 @@ class CloseTabIcon extends React.Component {
     props.centralizeTabIcons = tabUIState.centralizeTabIcons(currentWindow, frameKey, isPinned)
     props.showCloseIcon = closeState.showCloseTabIcon(currentWindow, frameKey)
     return props
-  }
-
-  componentDidMount (props) {
-    this.transitionIfRequired()
-  }
-
-  componentDidUpdate (prevProps) {
-    this.transitionIfRequired(prevProps)
-  }
-
-  transitionIfRequired (prevProps) {
-    const shouldTransitionIn = (
-      // need to have the element created already
-      this.element &&
-      // no icon is showing if pinned tab
-      !this.props.isPinned &&
-      // should show the icon
-      // TODO: if we want to animate the unmounting of the component (when
-      // tab is unhovered), then we should use https://github.com/reactjs/react-transition-group
-      // For now, we'll just not do anything since we can't - the element
-      // will have already been removed
-      this.props.showCloseIcon &&
-      // state has changed
-      (!prevProps || this.props.showCloseIcon !== prevProps.showCloseIcon)
-    )
-    if (shouldTransitionIn) {
-      this.element.animate(opacityIncreaseElementKeyframes, {
-        duration: 120,
-        easing: 'ease-out'
-      })
-    }
   }
 
   setRef (ref) {
