@@ -48,7 +48,7 @@
     },
 
     tabsToolbar: {
-      backgroundColor: '#cdcfd2',
+      backgroundColor: '#CDD1D5',
 
       border: {
         color: '#bbb'
@@ -137,11 +137,14 @@
     },
 
     tab: {
+      // tab background colors must always be in rgb format
+      // so they can be converted to various rgba formats in
+      // css.
       transitionDurationOut: '120ms',
       transitionDurationIn: '200ms',
       transitionEasingOut: 'ease-in',
       transitionEasingIn: 'ease-out',
-      background: '#cdcfd2',
+      background: 'rgb(205,209,213)',
       borderColor: '#bbb',
       borderWidth: 1,
       color: '#333',
@@ -159,9 +162,9 @@
       },
 
       hover: {
-        background: '#dbdddf',
+        background: 'rgb(219,221,223)',
         active: {
-          background: '#f3f3f3'
+          background: 'rgb(243,243,243)'
         },
         private: {
           borderColor: 'rgba(75, 60, 110, .7)'
@@ -173,21 +176,21 @@
       },
 
       active: {
-        background: '#e9e9ea',
+        background: 'rgb(233,233,234)',
 
         private: {
-          background: '#4b3c6e',
+          background: 'rgb(75,60,110)',
           color: '#fff'
         }
       },
 
       private: {
-        background: '#d9d6e0',
+        background: 'rgb(217,214,224)',
         color: '#4b3c6e'
       },
 
       preview: {
-        background: 'white',
+        background: 'rgb(255,255,255)',
         boxShadow: '0 -2px 12px rgba(0, 0, 0, 0.22)',
         scale: '1.06'
       },
