@@ -171,7 +171,6 @@ class Tab extends React.Component {
     if (this.tabNode) {
       const tabBounds = this.tabNode.getBoundingClientRect()
       this.tabOffsetLeft = tabBounds.left
-      this.tabOffsetTop = tabBounds.top
     }
   }
 
@@ -187,9 +186,7 @@ class Tab extends React.Component {
     // fancy radial gradient mouse tracker
     if (this.elementRef) {
       var x = e.pageX - this.tabOffsetLeft
-      var y = e.pageY - this.tabOffsetTop
       this.elementRef.style.setProperty('--tab-mouse-x', `${x}px`)
-      this.elementRef.style.setProperty('--tab-mouse-y', `${y}px`)
     }
   }
 
@@ -463,13 +460,14 @@ const styles = StyleSheet.create({
     '--tab-background': theme.tab.background,
     '--tab-color': theme.tab.color,
     '--tab-border-color': theme.tab.borderColor,
+    '--tab-background-hover': theme.tab.hover.background,
     ':hover': {
-      '--tab-background': `var(--tab-background-hover, ${theme.tab.hover.background})`,
+      '--tab-background': `var(--tab-background-hover)`,
       '--tab-color': `var(--tab-color-hover, ${theme.tab.color})`,
       '--tab-border-color': `var(--tab-border-color-hover, ${theme.tab.borderColor})`,
       '--tab-transit-duration': theme.tab.transitionDurationIn,
       '--tab-transit-easing': theme.tab.transitionEasingIn,
-      '--tab-mouse-opacity': '1'
+      '--tab-mouse-opacity': 1
     }
   },
 
@@ -529,6 +527,7 @@ const styles = StyleSheet.create({
   },
 
   tabArea_private: {
+    '--tab-mouse-brightness': '130%',
     '--tab-background': theme.tab.private.background,
     '--tab-background-hover': theme.tab.active.private.background,
     '--tab-color-hover': theme.tab.active.private.color,
@@ -565,27 +564,25 @@ const styles = StyleSheet.create({
 
     // mouse-tracking radial gradient
     '::after': {
-      '--tab-mouse-size': '150px',
-      opacity: 'var(--tab-mouse-opacity, 0)',
-      content: '""',
+      content: '" "',
       position: 'absolute',
-      left: 'var(--tab-mouse-x, -100%)',
-      top: 'var(--tab-mouse-y, -100%)',
-      width: 'var(--tab-mouse-size, 0)',
-      height: 'var(--tab-mouse-size, 0)',
-      background: 'radial-gradient(circle closest-side, var(--tab-background), transparent)',
-      transform: 'translate(-50%, -50%)',
-      transition: 'opacity 0s ease 0s',
-      // transition: `background var(--tab-transit-duration) var(--tab-transit-easing) var(--tab-transit-duration),
-      //            filter var(--tab-transit-duration) var(--tab-transit-easing) var(--tab-transit-duration)`,
-      filter: 'brightness(150%)',
+      left: 'var(--tab-mouse-x)',
+      top: 0,
+      bottom: 0,
+      width: '190px',
+      background: `radial-gradient(
+        circle farthest-corner,
+        var(--tab-background-hover),
+        transparent
+      )`,
+      filter: 'brightness(var(--tab-mouse-brightness, 106%))',
+      transform: 'translateX(-50%)',
+      transition: 'opacity var(--tab-transit-duration) ease',
+      opacity: 'var(--tab-mouse-opacity, 0)',
       // must be lower z-index than the tab title since it has a
       // fade to the tab-bg-color and if this is in-between it
       // and the tab-bg then that fade will look nasty.
       zIndex: 200
-    },
-    ':hover:after': {
-      transitionDelay: 'var(--tab-transit-delay)'
     }
   },
 

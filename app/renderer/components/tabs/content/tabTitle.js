@@ -91,12 +91,13 @@ const styles = StyleSheet.create({
       overflow: 'hidden',
       top: 0,
       left: 0,
-      right: '17.5%',
+      right: '18%',
       bottom: 0,
       fontWeight: 'inherit',
       content: 'attr(data-text)',
       color: 'var(--tab-color)',
-      zIndex: 20
+      zIndex: 20,
+      transition: `color var(--tab-transit-duration) var(--tab-transit-easing)`
     },
     '::after': {
       position: 'absolute',
@@ -107,10 +108,15 @@ const styles = StyleSheet.create({
       bottom: 0,
       fontWeight: 'inherit',
       content: 'attr(data-text)',
-      background: `linear-gradient(to left, var(--tab-background) 0, var(--tab-color) 18%) right top / 100% 100% no-repeat`,
+      background: `linear-gradient(
+        to left,
+        var(--tab-background) 0,
+        var(--tab-color) 18%
+      ) right top / 100% 100% no-repeat`,
       WebkitBackgroundClip: 'text !important', // !important is neccessary because aphrodite will put this at top of ruleset :-(
       color: 'transparent',
-      zIndex: 10
+      zIndex: 10,
+      transition: `background 0s var(--tab-transit-easing) var(--tab-transit-duration)`
     }
   },
 
