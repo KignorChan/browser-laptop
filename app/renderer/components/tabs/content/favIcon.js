@@ -43,7 +43,6 @@ class Favicon extends React.Component {
     props.tabIconColor = tabUIState.getTabIconColor(currentWindow, frameKey)
     props.showIconWithLessMargin = faviconState.showIconWithLessMargin(currentWindow, frameKey)
     props.showIconAtReducedSize = faviconState.showFaviconAtReducedSize(currentWindow, frameKey)
-    props.isPreview = frameKey === frameStateUtil.getPreviewFrameKey(currentWindow)
     props.tabId = tabId
 
     return props
@@ -103,8 +102,7 @@ class Favicon extends React.Component {
         this.props.favicon && styles.icon_fav,
         (this.props.favicon && themeLight) && styles.icon_favLight,
         (!this.props.isPinned && this.props.showIconWithLessMargin) && styles.icon_lessMargin,
-        (!this.props.isPinned && this.props.showIconAtReducedSize) && styles.icon_reducedSize,
-        this.props.isPreview && styles.icon_favPreview
+        (!this.props.isPinned && this.props.showIconAtReducedSize) && styles.icon_reducedSize
       ]}
       style={instanceStyles}
       ref={this.setRef}
@@ -133,13 +131,7 @@ class Favicon extends React.Component {
 const styles = StyleSheet.create({
   icon_fav: {
     backgroundImage: 'var(--faviconsrc)',
-    overflow: 'visible',
-    transition: `transform ${theme.tab.transitionDurationOut} ${theme.tab.transitionEasingOut}`
-  },
-
-  icon_favPreview: {
-    transform: 'scale(0.92)',
-    transition: `transform ${theme.tab.transitionDurationIn} ${theme.tab.transitionEasingIn}`
+    overflow: 'visible'
   },
 
   icon_favLight: {
