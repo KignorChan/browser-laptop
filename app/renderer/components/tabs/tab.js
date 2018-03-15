@@ -28,6 +28,7 @@ const privateState = require('../../../common/state/tabContentState/privateState
 const audioState = require('../../../common/state/tabContentState/audioState')
 const tabUIState = require('../../../common/state/tabUIState')
 const tabState = require('../../../common/state/tabState')
+const titleState = require('../../../common/state/tabContentState/titleState')
 
 // Constants
 const settings = require('../../../../js/constants/settings')
@@ -295,7 +296,7 @@ class Tab extends React.Component {
     props.isPreview = frameKey === frameStateUtil.getPreviewFrameKey(currentWindow) /* || frameKey === 2 */ // <-- uncomment to force 1 preview tab for style inspection
     props.tabWidth = isPinned ? null : currentWindow.getIn(['ui', 'tabs', 'fixTabWidth'])
     props.themeColor = tabUIState.getThemeColor(currentWindow, frameKey)
-    props.title = frame.get('title')
+    props.title = titleState.getDisplayTitle(currentWindow, frameKey)
     props.tabPageIndex = frameStateUtil.getTabPageIndex(currentWindow)
     props.partOfFullPageSet = partOfFullPageSet
     props.showAudioTopBorder = audioState.showAudioTopBorder(currentWindow, frameKey, isPinned)
