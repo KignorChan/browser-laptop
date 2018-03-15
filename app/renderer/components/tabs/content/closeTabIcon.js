@@ -77,8 +77,6 @@ class CloseTabIcon extends React.Component {
 const styles = StyleSheet.create({
   closeIcon: {
     '--close-line-color': 'var(--tab-color)',
-    '--close-transit-duration': theme.tab.transitionDurationOut,
-    '--close-transit-timing': theme.tab.transitionEasingOut,
     boxSizing: 'border-box',
     alignSelf: 'center',
     position: 'relative',
@@ -87,7 +85,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderRadius: theme.tab.closeButton.borderRadius,
     background: theme.tab.closeButton.background,
-    transition: 'background var(--close-transit-duration) var(--close-transit-timing)',
     marginRight: `calc(${globalStyles.spacing.defaultTabMargin} - 2px)`,
     width: globalStyles.spacing.closeIconSize,
     height: globalStyles.spacing.closeIconSize,
@@ -99,9 +96,7 @@ const styles = StyleSheet.create({
       '--close-transit-timing': theme.tab.transitionEasingIn
     },
     ':active': {
-      background: theme.tab.closeButton.active.background,
-      '--close-transit-duration': theme.tab.transitionDurationIn,
-      '--close-transit-timing': theme.tab.transitionEasingIn
+      background: theme.tab.closeButton.active.background
     }
   },
 
@@ -110,7 +105,6 @@ const styles = StyleSheet.create({
   },
 
   closeIcon__line: {
-    transition: 'stroke var(--close-transit-duration) var(--close-transit-timing)',
     stroke: 'var(--close-line-color)'
   },
 
