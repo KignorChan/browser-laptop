@@ -66,15 +66,14 @@ html,
       background: linear-gradient(to top, rgb(28, 27, 27) 0%, rgba(255, 255, 255, .3) 60%);
       display: block;
       opacity: 0;
-      transition: opacity .24s ease-in;
+      transition: opacity .5s ease-in; // TODO: get from theme.tab
       pointer-events: none;
       will-change: opacity;
-      z-index: 1;
-      z-index: 9999;
+      z-index: 1100;
     }
     &.hasFramePreview::after {
-      transition-timing-function: ease-out;
-      transition-duration: .35s;
+      transition-timing-function: ease-out; // TODO: get from theme.tab
+      transition-duration: .24s; // TODO: get from theme.tab
       opacity: 1;
     }
   }
@@ -112,8 +111,18 @@ html,
   // Note that this value can be as large as we want, it does not
   // need to match the timeout specified in the frame's <Transition /> element
   // (in renderer main.js). However, there is no reason to set it higher than that.
-  transition: visibility 0s linear .15s;
+  --visibility-delay: .15s;
+  --frame-zIndex-delay: 0s;
+  transition: visibility 0s linear var(--visibility-delay), z-index 0s linear var(--frame-zIndex-delay);
+  // active frame z-index
   z-index: 1000;
+
+  .hasFramePreview &.isActive {
+    // Move to below preview frame, but do so as part of 'preview' entry animation
+    // so that it is clear which frame is being previewed and which is active.
+    z-index: 993;
+    --frame-zIndex-delay: .2s;
+  }
 
   &:not(.isActive) {
     // non-active always lower than active
@@ -121,7 +130,7 @@ html,
   }
   &.isPreview {
     background: #222;
-    z-index: 1010;
+    z-index: 995;
   }
   // show frame when active or preview
   &.isActive,
@@ -131,7 +140,7 @@ html,
   &.isExiting {
     visibility: visible;
     // show instantly
-    transition-delay: 0s;
+    --visibility-delay: 0s;
   }
   // hide frame whilst it's figuring out which location to be
   // note: that isEntering is timed-out at a value set in renderer main.js
@@ -140,7 +149,7 @@ html,
   &.isEntering.isBlankLocation {
     visibility: hidden;
     // hide instantly (at first)
-    transition-delay: 0s;
+    --visibility-delay: 0s;
   }
 
   webview {

@@ -137,11 +137,8 @@
     },
 
     tab: {
-      // tab background colors must always be in rgb format
-      // so they can be converted to various rgba formats in
-      // css.
-      transitionDurationOut: '120ms',
-      transitionDurationIn: '200ms',
+      transitionDurationOut: '500ms',
+      transitionDurationIn: '240ms',
       transitionEasingOut: 'ease-in',
       transitionEasingIn: 'ease-out',
       background: 'rgb(205,209,213)',
