@@ -660,3 +660,12 @@ const styles = StyleSheet.create({
 })
 
 module.exports = ReduxComponent.connect(Tab)
+
+// Workaround the fact that aphrodite will not inject style rules untill css([rules])
+// is called. This causes CSS transitions to fire on the changes from the default values to the
+// specified initial values, which definitely should not happen.
+// Calling the css([rules]) function now allows these styles to be injected ahead of
+// any elements created which use the rules.
+// See https://codepen.io/petemill/pen/rdeqqv for a reproduction.
+css(styles.tabArea)
+css(styles.tabArea__tab)
