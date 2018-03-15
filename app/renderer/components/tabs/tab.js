@@ -647,8 +647,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     justifyContent: 'flex-start',
     alignItems: 'stretch',
-    overflow: 'visible',
-    transition: 'margin var(--tab-transit-duration) var(--tab-transit-easing)'
+    overflow: 'visible'
   },
 
   tabArea__tab__identity_centered: {
