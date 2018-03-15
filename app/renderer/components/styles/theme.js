@@ -189,7 +189,7 @@
       },
 
       preview: {
-        background: 'rgb(255,255,255)',
+        background: 'rgb(240,240,240)',
         boxShadow: '0 -2px 12px rgba(0, 0, 0, 0.22)',
         scale: '1.06'
       },
