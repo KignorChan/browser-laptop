@@ -557,7 +557,6 @@ const styles = StyleSheet.create({
     // make sure the tab element which contains the background color
     // has a new layer, so that the tab title text is rendered with subpixel antialiasing
     // that knows about both the foreground and background colors
-    willChange: 'transform',
     display: 'flex',
     transition: ['background-color', 'color', 'border']
       .map(prop => `${prop} var(--tab-transit-duration) var(--tab-transit-easing) 0s`)
@@ -571,10 +570,6 @@ const styles = StyleSheet.create({
 
     // mouse-tracking radial gradient
     '::before': {
-      // Ensure this element is rendered on another layer,
-      // so it does not interfere with tab title text sub-pixel
-      // antialiasing
-      willChange: 'transform',
       content: '" "',
       position: 'absolute',
       left: 'var(--tab-mouse-x)',
