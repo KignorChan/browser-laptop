@@ -185,8 +185,14 @@ class Tab extends React.Component {
       getSetting(settings.TAB_PREVIEW_TIMING))
     // fancy radial gradient mouse tracker
     if (this.elementRef) {
-      var x = e.pageX - this.tabOffsetLeft
-      this.elementRef.style.setProperty('--tab-mouse-x', `${x}px`)
+      // only update position once per render frame
+      if (!this.nextFrameSetTabMouseX) {
+        var x = e.pageX - this.tabOffsetLeft
+        this.nextFrameSetTabMouseX = window.requestAnimationFrame(() => {
+          this.nextFrameSetTabMouseX = null
+          this.elementRef.style.setProperty('--tab-mouse-x', `${x}px`)
+        })
+      }
     }
   }
 
