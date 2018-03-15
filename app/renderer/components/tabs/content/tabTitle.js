@@ -21,7 +21,6 @@ const isDarwin = platformUtil.isDarwin()
 
 // Styles
 const globalStyles = require('../../styles/global')
-const {theme} = require('../../styles/theme')
 
 class TabTitle extends React.Component {
   mergeProps (state, ownProps) {
