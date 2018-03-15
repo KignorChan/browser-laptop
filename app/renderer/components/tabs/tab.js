@@ -276,6 +276,7 @@ class Tab extends React.Component {
     const currentWindow = state.get('currentWindow')
     const frame = frameStateUtil.getFrameByKey(currentWindow, ownProps.frameKey) || Immutable.Map()
     const frameKey = ownProps.frameKey
+    const previewFrameKey = frameStateUtil.getPreviewFrameKey(currentWindow)
     const tabId = frame.get('tabId', tabState.TAB_ID_NONE)
     const isPinned = tabState.isTabPinned(state, tabId)
     const partOfFullPageSet = ownProps.partOfFullPageSet
@@ -292,8 +293,9 @@ class Tab extends React.Component {
     props.frameKey = frameKey
     props.isPinnedTab = isPinned
     props.isPrivateTab = privateState.isPrivateTab(currentWindow, frameKey)
-    props.isActive = frameStateUtil.isFrameKeyActive(currentWindow, frameKey)
-    props.isPreview = frameKey === frameStateUtil.getPreviewFrameKey(currentWindow) /* || frameKey === 2 */ // <-- uncomment to force 1 preview tab for style inspection
+    props.isActive = !!frameStateUtil.isFrameKeyActive(currentWindow, frameKey)
+    props.isPreview = frameKey === previewFrameKey /* || frameKey === 2 */ // <-- uncomment to force 1 preview tab for style inspection
+    props.anyTabIsPreview = previewFrameKey != null
     props.tabWidth = isPinned ? null : currentWindow.getIn(['ui', 'tabs', 'fixTabWidth'])
     props.themeColor = tabUIState.getThemeColor(currentWindow, frameKey)
     props.title = titleState.getDisplayTitle(currentWindow, frameKey)
@@ -360,6 +362,7 @@ class Tab extends React.Component {
         this.props.isPinnedTab && styles.tabArea_isPinned,
         (this.props.partOfFullPageSet || !!this.props.tabWidth) && styles.tabArea_partOfFullPageSet,
         this.props.isPreview && styles.tabArea_isPreview,
+        !this.props.isPreview && this.props.anyTabIsPreview && styles.tabArea_siblingIsPreview,
         // Windows specific style (color)
         isWindows && styles.tabArea__tab_forWindows,
         // Set background-color and color to active tab and private tab
@@ -531,6 +534,10 @@ const styles = StyleSheet.create({
     '--tab-zindex-delay': '0s',
     '--tab-transit-duration': theme.tab.transitionDurationIn,
     '--tab-transit-easing': theme.tab.transitionEasingIn
+  },
+
+  tabArea_siblingIsPreview: {
+    '--tab-zindex-delay': '0s'
   },
 
   tabArea_forWindows: {
