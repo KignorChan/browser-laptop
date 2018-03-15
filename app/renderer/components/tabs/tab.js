@@ -533,11 +533,8 @@ const styles = StyleSheet.create({
   },
 
   tabArea_private: {
-    '--tab-mouse-brightness': '130%',
     '--tab-background': theme.tab.private.background,
-    '--tab-background-hover': theme.tab.active.private.background,
-    '--tab-color-hover': theme.tab.active.private.color,
-    '--tab-border-color-hover': theme.tab.hover.private.borderColor
+    '--tab-background-hover': theme.tab.hover.private.background
   },
 
   tabArea_private_active: {

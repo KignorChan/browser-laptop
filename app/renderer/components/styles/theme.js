@@ -167,6 +167,7 @@
           background: 'rgb(243,243,243)'
         },
         private: {
+          background: 'rgb(225,223,238)',
           borderColor: 'rgba(75, 60, 110, .7)'
         }
       },
@@ -185,7 +186,7 @@
       },
 
       private: {
-        background: 'rgb(217,214,224)',
+        background: 'rgb(217,213,228)',
         color: '#4b3c6e'
       },
 
