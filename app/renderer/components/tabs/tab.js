@@ -467,7 +467,7 @@ const styles = StyleSheet.create({
       '--tab-border-color': `var(--tab-border-color-hover, ${theme.tab.borderColor})`,
       '--tab-transit-duration': theme.tab.transitionDurationIn,
       '--tab-transit-easing': theme.tab.transitionEasingIn,
-      '--tab-mouse-opacity': 1
+      '--tab-mouse-opacity': '1'
     }
   },
 
@@ -551,6 +551,10 @@ const styles = StyleSheet.create({
   tabArea__tab: {
     boxSizing: 'border-box',
     background: `var(--tab-background, ${theme.tab.background})`,
+    // make sure the tab element which contains the background color
+    // has a new layer, so that the tab title text is rendered with subpixel antialiasing
+    // that knows about both the foreground and background colors
+    willChange: 'transform',
     display: 'flex',
     transition: ['background-color', 'color', 'border']
       .map(prop => `${prop} var(--tab-transit-duration) var(--tab-transit-easing) 0s`)
@@ -563,13 +567,17 @@ const styles = StyleSheet.create({
     borderBottom: `solid var(--tab-border-width, ${theme.tab.borderWidth}px) var(--tab-border-color-bottom, var(--tab-border-color))`,
 
     // mouse-tracking radial gradient
-    '::after': {
+    '::before': {
+      // Ensure this element is rendered on another layer,
+      // so it does not interfere with tab title text sub-pixel
+      // antialiasing
+      willChange: 'transform',
       content: '" "',
       position: 'absolute',
       left: 'var(--tab-mouse-x)',
       top: 0,
       bottom: 0,
-      width: '190px',
+      width: 'calc(190px * var(--tab-mouse-opacity, 0))',
       background: `radial-gradient(
         circle farthest-corner,
         var(--tab-background-hover),
@@ -577,12 +585,13 @@ const styles = StyleSheet.create({
       )`,
       filter: 'brightness(var(--tab-mouse-brightness, 106%))',
       transform: 'translateX(-50%)',
-      transition: 'opacity var(--tab-transit-duration) ease',
-      opacity: 'var(--tab-mouse-opacity, 0)',
-      // must be lower z-index than the tab title since it has a
-      // fade to the tab-bg-color and if this is in-between it
-      // and the tab-bg then that fade will look nasty.
-      zIndex: 200
+      transition: 'opacity var(--tab-transit-duration) ease, width 0s linear var(--tab-transit-duration)',
+      opacity: 'var(--tab-mouse-opacity, 0)'
+    },
+    ':hover:before': {
+      // Show immediately, and fade-in opacity,
+      // but when leaving, wait for fade-out to finish before hiding.
+      transitionDelay: '0s'
     }
   },
 

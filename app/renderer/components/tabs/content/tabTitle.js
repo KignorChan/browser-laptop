@@ -75,30 +75,31 @@ const styles = StyleSheet.create({
     minWidth: 0, // see https://stackoverflow.com/a/36247448/4902448
     width: '-webkit-fill-available',
     marginLeft: '6px',
+    // Fade any overflow text out,
+    // but use a technique which preserves:
+    // 1. Sub-pixel colored antialized text - e.g. background-clip: text does not use this.
+    //    (with color - zoom in 20x on mac and you'll see)
+    // 2. Background and text color transition with no artifacts left over due to a
+    //    pseudo element gradient fade which cannot transition (cannot transition linear gradient color)
     overflow: 'hidden',
-    // relative position is required for background-clip
     position: 'relative',
-    zIndex: 300,
-    // fade the text out by creating a background which fades to tab bg from text color
-    // but clip it to the text so it doesn't interfere with any other tab background gradient.
-    // Also restrict to a tiny portion of the text as background-clip: text means
-    // no sub-pixel antializing (with color - zoom in 20x on mac and you'll see)
-    // for that portion of text.
     color: 'transparent',
+    // the text, rendered as normal, but cut off early
     '::before': {
       position: 'absolute',
       display: 'block',
       overflow: 'hidden',
       top: 0,
       left: 0,
-      right: '18%',
+      right: 'calc(18% - 1px)',
       bottom: 0,
       fontWeight: 'inherit',
       content: 'attr(data-text)',
       color: 'var(--tab-color)',
-      zIndex: 20,
       transition: `color var(--tab-transit-duration) var(--tab-transit-easing)`
     },
+    // the fade-out using background gradient clipped to text
+    // and only starting off where actual text is cut off
     '::after': {
       position: 'absolute',
       display: 'block',
@@ -108,14 +109,15 @@ const styles = StyleSheet.create({
       bottom: 0,
       fontWeight: 'inherit',
       content: 'attr(data-text)',
+      // restrict background-size to a tiny portion of the text as background-clip: text means
+      // no sub-pixel antializing
       background: `linear-gradient(
-        to left,
-        var(--tab-background) 0,
-        var(--tab-color) 18%
-      ) right top / 100% 100% no-repeat`,
+        to right,
+        var(--tab-color) 0,
+        transparent 100%
+      ) right top / 18% 100% no-repeat`,
       WebkitBackgroundClip: 'text !important', // !important is neccessary because aphrodite will put this at top of ruleset :-(
       color: 'transparent',
-      zIndex: 10,
       transition: `background 0s var(--tab-transit-easing) var(--tab-transit-duration)`
     }
   },
