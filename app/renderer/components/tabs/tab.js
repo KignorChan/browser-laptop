@@ -324,10 +324,14 @@ class Tab extends React.Component {
         easing: 'ease-in-out'
       })
     }
-    // no transition between active <-> inactive
-    if (this.elementRef && prevProps && prevProps.isActive !== this.props.isActive) {
+    // no transition between:
+    // - active <-> inactive state
+    // - no theme color and first theme color
+    if (this.elementRef && prevProps && (
+      prevProps.isActive !== this.props.isActive ||
+      (!prevProps.themeColor && this.props.themeColor)
+    )) {
       const className = css(styles.tabArea_instantTransition)
-      console.log(`adding class ${className} to`, this.elementRef)
       this.elementRef.classList.add(className)
       window.requestAnimationFrame(() => {
         this.elementRef.classList.remove(className)
