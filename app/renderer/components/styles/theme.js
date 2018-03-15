@@ -148,6 +148,7 @@
       borderColor: '#bbb',
       borderWidth: 1,
       color: '#333',
+      identityHeight: globalStyles.spacing.iconSize,
 
       closeButton: {
         background: 'transparent',

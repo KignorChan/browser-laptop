@@ -71,7 +71,6 @@ const styles = StyleSheet.create({
     flex: 1,
     userSelect: 'none',
     fontSize: globalStyles.fontSize.tabTitle,
-    lineHeight: '1',
     minWidth: 0, // see https://stackoverflow.com/a/36247448/4902448
     width: '-webkit-fill-available',
     marginLeft: '6px',
