@@ -1,4 +1,15 @@
 {
   "standard.enable": true,
-  "standard.usePackageJson": true
+  "standard.usePackageJson": true,
+  "files.associations": {
+    "chrono": "cpp",
+    "__config": "cpp",
+    "__nullptr": "cpp",
+    "exception": "cpp",
+    "initializer_list": "cpp",
+    "new": "cpp",
+    "stdexcept": "cpp",
+    "typeinfo": "cpp",
+    "algorithm": "cpp"
+  }
 }

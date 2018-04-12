@@ -116,6 +116,8 @@ const UrlUtil = {
     const case4Reg = /^(data|view-source|mailto|about|chrome-extension|chrome-devtools|magnet|chrome):.*/
 
     let str = input.trim()
+    //console.log("isNotUrl - input: "+input)
+    str = str.replace(" ", "%20")
     const scheme = UrlUtil.getScheme(str)
 
     if (str.toLowerCase() === 'localhost') {
@@ -184,6 +186,7 @@ const UrlUtil = {
     if (!pathname) {
       return false
     }
+
     return pathname.toLowerCase().endsWith('.' + ext)
   },
 
